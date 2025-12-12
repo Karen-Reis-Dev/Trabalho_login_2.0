@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Amante de Plantas</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #1b4332, #2d6a4f);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .register-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .logo-icon {
+            font-size: 42px;
+            color: #2d6a4f;
+        }
+        
+        .logo h1 {
+            color: #2d6a4f;
+            font-size: 28px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2d6a4f;
+            font-weight: 500;
+        }
+        
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        input:focus {
+            border-color: #40916c;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(64, 145, 108, 0.2);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #40916c, #2d6a4f);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(64, 145, 108, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: #2d6a4f;
+            border: 2px solid #2d6a4f;
+            margin-top: 15px;
+        }
+        
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .password-strength {
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        
+        .strength-bar {
+            height: 5px;
+            background: #ddd;
+            border-radius: 3px;
+            margin: 5px 0;
+            overflow: hidden;
+        }
+        
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        .links {
+            margin-top: 25px;
+            text-align: center;
+        }
+        
+        .links a {
+            color: #2d6a4f;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .links a:hover {
+            text-decoration: underline;
+        }
+        
+        .hash-demo {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 25px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            word-break: break-all;
+            border: 1px solid #dee2e6;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <div class="logo">
+            <div class="logo-icon">🌿</div>
+            <h1>Amante de Plantas</h1>
+        </div>
+        
+        <div id="message" class="message"></div>
+        
+        <h2 style="text-align: center; color: #2d6a4f; margin-bottom: 30px;">Criar Nova Conta</h2>
+        
+        <form id="registerForm">
+            <div class="form-group">
+                <label for="nome">Nome Completo:</label>
+                <input type="text" id="nome" name="nome" required placeholder="Seu nome completo">
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required placeholder="seu@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" name="senha" required placeholder="Mínimo 6 caracteres">
+                <div class="password-strength">
+                    <div class="strength-bar">
+                        <div class="strength-fill" id="strengthFill"></div>
+                    </div>
+                    <div id="strengthText">Força da senha: Fraca</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmarSenha">Confirmar Senha:</label>
+                <input type="password" id="confirmarSenha" name="confirmarSenha" required placeholder="Digite a senha novamente">
+            </div>
+            
+            <button type="submit" class="btn">Criar Conta</button>
+        </form>
+        
+        <a href="login.html" class="btn btn-secondary">
+            Já tem uma conta? Faça login
+        </a>
+        
+        <div class="links">
+            <p><a href="index.html">← Voltar para a página inicial</a></p>
+        </div>
+        
+        <!-- Demonstração do Hash (para apresentação) -->
+        <div class="hash-demo">
+            <p><strong>🔒 Demonstração de Segurança:</strong></p>
+            <p>Digite uma senha para ver como ela é criptografada com SHA-256:</p>
+            <input type="password" id="demoSenha" placeholder="Digite uma senha" 
+                   style="width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #ccc;">
+            <p>Hash SHA-256 gerado: <span id="hashResult" style="color: #2d6a4f;">(digite uma senha)</span></p>
+        </div>
+    </div>
+    
+    <script>
+        // Verificador de força da senha
+        document.getElementById('senha').addEventListener('input', function() {
+            const senha = this.value;
+            const strengthFill = document.getElementById('strengthFill');
+            const strengthText = document.getElementById('strengthText');
+            
+            let strength = 0;
+            let color = '#dc3545'; // Vermelho
+            
+            if (senha.length >= 6) strength += 25;
+            if (/[A-Z]/.test(senha)) strength += 25;
+            if (/[0-9]/.test(senha)) strength += 25;
+            if (/[^A-Za-z0-9]/.test(senha)) strength += 25;
+            
+            strengthFill.style.width = strength + '%';
+            
+            if (strength <= 25) {
+                strengthText.textContent = 'Força da senha: Fraca';
+                color = '#dc3545';
+            } else if (strength <= 50) {
+                strengthText.textContent = 'Força da senha: Regular';
+                color = '#fd7e14';
+            } else if (strength <= 75) {
+                strengthText.textContent = 'Força da senha: Boa';
+                color = '#ffc107';
+            } else {
+                strengthText.textContent = 'Força da senha: Forte';
+                color = '#28a745';
+            }
+            
+            strengthFill.style.background = color;
+        });
+        
+        // Demonstração do hash em tempo real
+        document.getElementById('demoSenha').addEventListener('input', async function() {
+            const senha = this.value;
+            if (senha.length > 0) {
+                try {
+                    // Simulação do hash no frontend (para demonstração)
+                    async function simularHash(text) {
+                        const encoder = new TextEncoder();
+                        const data = encoder.encode(text);
+                        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                        const hashArray = Array.from(new Uint8Array(hashBuffer));
+                        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                    }
+                    
+                    const hash = await simularHash(senha);
+                    document.getElementById('hashResult').textContent = hash;
+                } catch (error) {
+                    document.getElementById('hashResult').textContent = 'Erro ao gerar hash';
+                }
+            } else {
+                document.getElementById('hashResult').textContent = '(digite uma senha)';
+            }
+        });
+        
+        // Cadastro de usuário
+        document.getElementById('registerForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            const confirmarSenha = document.getElementById('confirmarSenha').value;
+            const messageDiv = document.getElementById('message');
+            
+            // Limpar mensagem anterior
+            messageDiv.style.display = 'none';
+            messageDiv.className = 'message';
+            
+            // Validações
+            if (senha !== confirmarSenha) {
+                messageDiv.textContent = 'As senhas não coincidem!';
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            if (senha.length < 6) {
+                messageDiv.textContent = 'A senha deve ter pelo menos 6 caracteres!';
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            if (!email.includes('@') || !email.includes('.')) {
+                messageDiv.textContent = 'Digite um email válido!';
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+                return;
+            }
+            
+            // Enviar dados para o backend
+            try {
+                const response = await fetch('http://localhost:3000/api/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ nome, email, senha })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    messageDiv.textContent = '✅ Conta criada com sucesso! Configure a autenticação em duas etapas no primeiro login.';
+                    messageDiv.className = 'message success';
+                    messageDiv.style.display = 'block';
+                    
+                    // Limpar formulário
+                    document.getElementById('registerForm').reset();
+                    
+                    // Redirecionar para login após 3 segundos
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 3000);
+                } else {
+                    messageDiv.textContent = data.error || 'Erro ao criar conta. Tente outro email.';
+                    messageDiv.className = 'message error';
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                messageDiv.textContent = 'Erro de conexão com o servidor. Verifique se o backend está rodando.';
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+                console.error('Erro:', error);
+            }
+        });
+        
+        // Testar conexão com API ao carregar a página
+        window.addEventListener('load', async () => {
+            try {
+                await fetch('http://localhost:3000/api/hash/teste');
+                console.log('✅ API conectada com sucesso');
+            } catch (error) {
+                document.getElementById('message').textContent = '⚠️ Servidor offline. Inicie o backend primeiro.';
+                document.getElementById('message').className = 'message info';
+                document.getElementById('message').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

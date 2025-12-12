@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Login - Amante de Plantas</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body { background: linear-gradient(135deg, #1b4332, #2d6a4f); min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-box { background: white; padding: 40px; border-radius: 15px; width: 350px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        input, button { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ddd; }
+        button { background: #2d6a4f; color: white; border: none; cursor: pointer; font-weight: bold; }
+        .message { padding: 10px; border-radius: 5px; margin: 10px 0; display: none; }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2 style="text-align: center; color: #2d6a4f;">🔐 Login</h2>
+        
+        <div id="message" class="message"></div>
+        
+        <div id="loginForm">
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="password" id="senha" placeholder="Senha" required>
+            <button onclick="login()">Entrar</button>
+        </div>
+        
+        <div id="verifyForm" style="display: none;">
+            <h4>📱 Código de Verificação</h4>
+            <p style="font-size: 14px; color: #666;">Digite o código de 6 dígitos</p>
+            <input type="text" id="codigo" placeholder="000000" maxlength="6">
+            <button onclick="verify2FA()">Verificar</button>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="register.html" style="color: #2d6a4f;">Criar conta</a> | 
+            <a href="index.html" style="color: #2d6a4f;">Voltar</a>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        
+        async function login() {
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            
+            try {
+                const res = await fetch('http://localhost:3000/api/login', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({email, senha})
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    if (data.precisa2FA) {
+                        currentUser = data.usuario;
+                        document.getElementById('loginForm').style.display = 'none';
+                        document.getElementById('verifyForm').style.display = 'block';
+                        showMessage(`Código enviado: ${data.codigo2FA}`, 'success');
+                    } else {
+                        localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                        window.location.href = 'dashboard.html';
+                    }
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (err) {
+                showMessage('Erro de conexão', 'error');
+            }
+        }
+        
+        async function verify2FA() {
+            const codigo = document.getElementById('codigo').value;
+            
+            try {
+                const res = await fetch('http://localhost:3000/api/verify-2fa', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        usuarioId: currentUser.id,
+                        codigo: codigo
+                    })
+                });
+                
+                const data = await res.json();
+                
+                if (data.success) {
+                    localStorage.setItem('usuario', JSON.stringify(data.usuario));
+                    showMessage('✅ Verificado! Redirecionando...', 'success');
+                    setTimeout(() => window.location.href = 'dashboard.html', 1500);
+                } else {
+                    showMessage(data.error, 'error');
+                }
+            } catch (err) {
+                showMessage('Erro na verificação', 'error');
+            }
+        }
+        
+        function showMessage(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = `message ${type}`;
+            msg.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
